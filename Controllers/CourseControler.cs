@@ -2,6 +2,7 @@ using lms_server.database;
 using lms_server.mapper;
 using lms_server.dto.Course;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace lms_server.controllers;
 
@@ -16,16 +17,17 @@ public class CourseController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetAll() 
+    public async Task<IActionResult> GetAll() 
     {
-        var courses = _context.Course.Select(course => course.ToCourseDto()).ToList();
-        return Ok(courses);
+        var courses = await _context.Course.ToListAsync();
+        var coursesDto = courses.Select(course => course.ToCourseDto());
+        return Ok(coursesDto);
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetById([FromRoute] int id)
+    public async Task<IActionResult> GetById([FromRoute] int id)
     {
-        var course = _context.Course.Find(id);
+        var course = await _context.Course.FindAsync(id);
 
         if(course == null)
         {
@@ -36,18 +38,18 @@ public class CourseController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create([FromBody] CreateCourseRequest courseRequest)
+    public async Task<IActionResult> Create([FromBody] CreateCourseRequest courseRequest)
     {
         var courseModel = courseRequest.ToCourseFromCreateDto();
-        _context.Course.Add(courseModel);
-        _context.SaveChanges();
+        await _context.Course.AddAsync(courseModel);
+        await _context.SaveChangesAsync();
         return CreatedAtAction(nameof(GetById), new { id = courseModel.Id }, courseModel.ToCourseDto());
     }
 
     [HttpPut("{id}")]
-    public IActionResult Update([FromRoute] int id, [FromBody] UpdateCourseRequest courseRequest)
+    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCourseRequest courseRequest)
     {
-        var courseModel = _context.Course.Find(id);
+        var courseModel = await _context.Course.FirstOrDefaultAsync(x => x.Id == id);
 
         if(courseModel == null)
         {
@@ -55,8 +57,8 @@ public class CourseController : ControllerBase
         }
 
         courseModel = courseRequest.ToCourseFromUpdateDto(courseModel);
-        _context.Course.Update(courseModel);
-        _context.SaveChanges();
+        // _context.Course.Update(courseModel);
+        await _context.SaveChangesAsync();
         
         return Ok(courseModel.ToCourseDto());
     }

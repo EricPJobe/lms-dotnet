@@ -2,6 +2,7 @@ using lms_server.database;
 using lms_server.mapper;
 using lms_server.dto.Profile;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace lms_server.controllers;
 
@@ -16,16 +17,17 @@ public class ProfileController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetAll() 
+    public async Task<IActionResult> GetAll() 
     {
-        var profiles = _context.Profile.Select(profile => profile.ToProfileDto()).ToList();
-        return Ok(profiles);
+        var profiles = await _context.Profile.ToListAsync();
+        var profilesDto = profiles.Select(profile => profile.ToProfileDto());
+        return Ok(profilesDto);
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetById([FromRoute] int id)
+    public async Task<IActionResult> GetById([FromRoute] int id)
     {
-        var profile = _context.Profile.Find(id);
+        var profile = await _context.Profile.FindAsync(id);
 
         if(profile == null)
         {
@@ -36,18 +38,18 @@ public class ProfileController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create([FromBody] CreateProfileRequest profileRequest)
+    public async Task<IActionResult> Create([FromBody] CreateProfileRequest profileRequest)
     {
         var profileModel = profileRequest.ToProfileFromCreateDto();
-        _context.Profile.Add(profileModel);
-        _context.SaveChanges();
+        await _context.Profile.AddAsync(profileModel);
+        await _context.SaveChangesAsync();
         return CreatedAtAction(nameof(GetById), new { id = profileModel.Id }, profileModel.ToProfileDto());
     }
 
     [HttpPut("{id}")]
-    public IActionResult Update([FromRoute] int id, [FromBody] UpdateProfileRequest profileRequest)
+    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateProfileRequest profileRequest)
     {
-        var profileModel = _context.Profile.Find(id);
+        var profileModel = await _context.Profile.FirstOrDefaultAsync(x => x.Id == id);
 
         if(profileModel == null)
         {
@@ -55,8 +57,8 @@ public class ProfileController : ControllerBase
         }
 
         profileModel = profileRequest.ToProfileFromUpdateDto(profileModel);
-        _context.Profile.Update(profileModel);
-        _context.SaveChanges();
+        // _context.Profile.Update(profileModel);
+        await _context.SaveChangesAsync();
         
         return Ok(profileModel.ToProfileDto());
     }

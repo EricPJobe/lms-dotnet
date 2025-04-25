@@ -2,6 +2,7 @@ using lms_server.database;
 using lms_server.mapper;
 using lms_server.dto.Account;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace lms_server.controllers;
 
@@ -16,16 +17,17 @@ public class AccountController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetAll() 
+    public async Task<IActionResult> GetAll() 
     {
-        var accounts = _context.Account.Select(account => account.ToAccountDto()).ToList();
-        return Ok(accounts);
+        var accounts = await _context.Account.ToListAsync();
+        var accountsDto = accounts.Select(account => account.ToAccountDto());
+        return Ok(accountsDto);
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetById([FromRoute] int id)
+    public async Task<IActionResult> GetById([FromRoute] int id)
     {
-        var account = _context.Account.Find(id);
+        var account = await _context.Account.FindAsync(id);
 
         if(account == null)
         {
@@ -36,18 +38,18 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create([FromBody] CreateAccountRequest accountRequest)
+    public async Task<IActionResult> Create([FromBody] CreateAccountRequest accountRequest)
     {
         var accountModel = accountRequest.ToAccountFromCreateDto();
-        _context.Account.Add(accountModel);
-        _context.SaveChanges();
+        await _context.Account.AddAsync(accountModel);
+        await _context.SaveChangesAsync();
         return CreatedAtAction(nameof(GetById), new { id = accountModel.Id }, accountModel.ToAccountDto());
     }
 
     [HttpPut("{id}")]
-    public IActionResult Update([FromRoute] int id, [FromBody] UpdateAccountRequest accountRequest)
+    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateAccountRequest accountRequest)
     {
-        var accountModel = _context.Account.Find(id);
+        var accountModel = await _context.Account.FirstOrDefaultAsync(x => x.Id == id);
 
         if(accountModel == null)
         {
@@ -55,8 +57,8 @@ public class AccountController : ControllerBase
         }
 
         accountModel = accountRequest.ToAccountFromUpdateDto(accountModel);
-        _context.Account.Update(accountModel);
-        _context.SaveChanges();
+        // _context.Account.Update(accountModel);
+        await _context.SaveChangesAsync();
         
         return Ok(accountModel.ToAccountDto());
     }

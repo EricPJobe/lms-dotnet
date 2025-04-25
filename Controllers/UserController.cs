@@ -2,6 +2,7 @@ using lms_server.database;
 using lms_server.dto.User;
 using lms_server.mapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace lms_server.controllers;
 
@@ -16,16 +17,17 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetAll() 
+    public async Task<IActionResult> GetAll() 
     {
-        var users = _context.User.Select(user => user.ToUserDto()).ToList();
-        return Ok(users);
+        var users = await _context.User.ToListAsync();
+        var userDto = users.Select(user => user.ToUserDto());
+        return Ok(userDto);
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetById([FromRoute] int id)
+    public async Task<IActionResult> GetById([FromRoute] int id)
     {
-        var user = _context.User.Find(id);
+        var user = await _context.User.FindAsync(id);
 
         if(user == null)
         {
@@ -36,18 +38,18 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create([FromBody] CreateUserRequest userRequest)
+    public async Task<IActionResult> Create([FromBody] CreateUserRequest userRequest)
     {
         var userModel = userRequest.ToUserFromCreateDto();
-        _context.User.Add(userModel);
-        _context.SaveChanges();
+        await _context.User.AddAsync(userModel);
+        await _context.SaveChangesAsync();
         return CreatedAtAction(nameof(GetById), new { id = userModel.Id }, userModel.ToUserDto());
     }
 
     [HttpPut("{id}")]
-    public IActionResult Update([FromRoute] int id, [FromBody] UpdateUserRequest userRequest)
+    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateUserRequest userRequest)
     {
-        var userModel = _context.User.FirstOrDefault(x => x.Id == id);
+        var userModel = await _context.User.FirstOrDefaultAsync(x => x.Id == id);
 
         if(userModel == null)
         {
@@ -55,8 +57,8 @@ public class UserController : ControllerBase
         }
 
         userModel = userRequest.ToUserFromUpdateDto(userModel);
-        _context.User.Update(userModel);
-        _context.SaveChanges();
+        // await _context.User.UpdateAsync(userModel);
+        await _context.SaveChangesAsync();
         
         return Ok(userModel.ToUserDto());
     }
