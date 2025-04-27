@@ -1,5 +1,7 @@
 using lms_server.database;
 using lms_server.mapper;
+using lms_server.Repositories;
+using lms_server.Interfaces;
 using lms_server.dto.Asset;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,15 +13,17 @@ namespace lms_server.controllers;
 public class AssetController : ControllerBase
 {
     private readonly ApplicationDBContext _context;
-    public AssetController(ApplicationDBContext context) 
+    private readonly IAssetRepository _assetRepository;
+    public AssetController(ApplicationDBContext context, IAssetRepository assetRepository) 
     {
+        _assetRepository = assetRepository;
         _context = context;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll() 
     {
-        var assets = await _context.Asset.ToListAsync();
+        var assets = await _assetRepository.GetAllAssetsAsync(new QueryObject());
         var assetsDto = assets.Select(asset => asset.ToAssetDto());
         return Ok(assetsDto);
     }
@@ -27,7 +31,7 @@ public class AssetController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
-        var asset = await _context.Asset.FindAsync(id);
+        var asset = await _assetRepository.GetAssetByIdAsync(id);
 
         if(asset == null)
         {
@@ -41,24 +45,19 @@ public class AssetController : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreateAssetRequest assetRequest)
     {
         var assetModel = assetRequest.ToAssetFromCreateDto();
-        await _context.Asset.AddAsync(assetModel);
-        await _context.SaveChangesAsync();
+        await _assetRepository.CreateAssetAsync(assetModel);
         return CreatedAtAction(nameof(GetById), new { id = assetModel.Id }, assetModel.ToAssetDto());
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateAssetRequest assetRequest)
     {
-        var assetModel = await _context.Asset.FirstOrDefaultAsync(x => x.Id == id);
+        var assetModel = await _assetRepository.UpdateAssetAsync(id, assetRequest.ToAssetFromUpdateDto());
 
         if(assetModel == null)
         {
             return NotFound();
         }
-
-        assetModel = assetRequest.ToAssetFromUpdateDto(assetModel);
-        // _context.Asset.Update(assetModel);
-        await _context.SaveChangesAsync();
         
         return Ok(assetModel.ToAssetDto());
     }

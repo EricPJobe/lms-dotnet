@@ -9,6 +9,4 @@ public class Profile
     public DateTime CreatedTS { get; set; } = DateTime.Now;
     public DateTime? UpdatedTS { get; set; }
     public bool IsActive { get; set; }
-
-    public virtual List<UserProfile> UserProfiles { get; set; } = new List<UserProfile>();
 }

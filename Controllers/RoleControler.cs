@@ -1,6 +1,8 @@
 using lms_server.database;
 using lms_server.mapper;
 using lms_server.dto.Role;
+using lms_server.Repositories;
+using lms_server.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,15 +13,17 @@ namespace lms_server.controllers;
 public class RoleController : ControllerBase
 {
     private readonly ApplicationDBContext _context;
-    public RoleController(ApplicationDBContext context) 
+    private readonly IRoleRepository _roleRepository;
+    public RoleController(ApplicationDBContext context, IRoleRepository roleRepository) 
     {
+        _roleRepository = roleRepository;
         _context = context;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll() 
     {
-        var roles = await _context.Role.ToListAsync();
+        var roles = await _roleRepository.GetAllRolesAsync(new QueryObject());
         var rolesDto = roles.Select(role => role.ToRoleDto());
         return Ok(rolesDto);
     }
@@ -27,7 +31,7 @@ public class RoleController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
-        var role = await _context.Role.FindAsync(id);
+        var role = await _roleRepository.GetRoleByIdAsync(id);
 
         if(role == null)
         {
@@ -41,24 +45,19 @@ public class RoleController : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreateRoleRequest roleRequest)
     {
         var roleModel = roleRequest.ToRoleFromCreateDto();
-        await _context.Role.AddAsync(roleModel);
-        await _context.SaveChangesAsync();
+        await _roleRepository.CreateRoleAsync(roleModel);
         return CreatedAtAction(nameof(GetById), new { id = roleModel.Id }, roleModel.ToRoleDto());
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateRoleRequest roleRequest)
     {
-        var roleModel = await _context.Role.FirstOrDefaultAsync(x => x.Id == id);
+        var roleModel = await _roleRepository.UpdateRoleAsync(id, roleRequest.ToRoleFromUpdateDto());
 
         if(roleModel == null)
         {
             return NotFound();
         }
-
-        roleModel = roleRequest.ToRoleFromUpdateDto(roleModel);
-        // _context.Role.Update(roleModel);
-        await _context.SaveChangesAsync();
         
         return Ok(roleModel.ToRoleDto());
     }

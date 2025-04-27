@@ -1,6 +1,8 @@
 using lms_server.database;
 using lms_server.mapper;
 using lms_server.dto.Unit;
+using lms_server.Repositories;
+using lms_server.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,15 +13,17 @@ namespace lms_server.controllers;
 public class UnitController : ControllerBase
 {
     private readonly ApplicationDBContext _context;
-    public UnitController(ApplicationDBContext context) 
+    private readonly IUnitRepository _unitRepository;
+    public UnitController(ApplicationDBContext context, IUnitRepository unitRepository) 
     {
+        _unitRepository = unitRepository;
         _context = context;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll() 
     {
-        var units = await _context.Unit.ToListAsync();
+        var units = await _unitRepository.GetAllUnitsAsync(new QueryObject());
         var unitsDto = units.Select(unit => unit.ToUnitDto());
         return Ok(unitsDto);
     }
@@ -27,7 +31,7 @@ public class UnitController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
-        var unit = await _context.Unit.FindAsync(id);
+        var unit = await _unitRepository.GetUnitByIdAsync(id);
 
         if(unit == null)
         {
@@ -41,25 +45,20 @@ public class UnitController : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreateUnitRequest unitRequest)
     {
         var unitModel = unitRequest.ToUnitFromCreateDto();
-        await _context.Unit.AddAsync(unitModel);
-        await _context.SaveChangesAsync();
+        await _unitRepository.CreateUnitAsync(unitModel);
         return CreatedAtAction(nameof(GetById), new { id = unitModel.Id }, unitModel.ToUnitDto());
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateUnitRequest unitRequest)
     {
-        var unitModel = await _context.Unit.FirstOrDefaultAsync(x => x.Id == id);
+        var unitModel = await _unitRepository.UpdateUnitAsync(id, unitRequest.ToUnitFromUpdateDto());
 
         if(unitModel == null)
         {
             return NotFound();
         }
 
-        unitModel = unitRequest.ToUnitFromUpdateDto(unitModel);
-        // _context.Unit.Update(unitModel);
-        await _context.SaveChangesAsync();
-        
         return Ok(unitModel.ToUnitDto());
     }
 }

@@ -20,5 +20,5 @@ public class ApplicationDBContext : DbContext
     public DbSet<UnitCourse> UnitCourse { get; set; }
     public DbSet<UserRole> UserRole { get; set; }
     public DbSet<UserAccount> UserAccount { get; set; }
-    public DbSet<UserProfile> UserProfile { get; set; }
+    public DbSet<AccountCourses> AccountCourses { get; set; }
 }
