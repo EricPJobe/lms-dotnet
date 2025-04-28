@@ -1,5 +1,6 @@
 using lms_server.database;
 using lms_server.mapper;
+using lms_server.Helpers;
 using lms_server.dto.Profile;
 using lms_server.Repositories;
 using lms_server.Interfaces;
@@ -24,7 +25,7 @@ public class ProfileController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll() 
     {
-        var profiles = await _profileRepository.GetAllProfilesAsync(new QueryObject());
+        var profiles = await _profileRepository.GetAllProfilesAsync(new QueryObject(1, 100, "", "", false));
         var profilesDto = profiles.Select(profile => profile.ToProfileDto());
         return Ok(profilesDto);
     }
@@ -53,7 +54,7 @@ public class ProfileController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateProfileRequest profileRequest)
     {
-        var profileModel = await _profileRepository.UpdateProfileAsync(id, profileRequest.ToProfileFromUpdateDto());
+        var profileModel = await _profileRepository.UpdateProfileAsync(id, profileRequest);
         if(profileModel == null)
         {
             return NotFound();

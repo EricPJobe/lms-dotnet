@@ -1,4 +1,5 @@
 using lms_server.database;
+using lms_server.dto.Asset;
 using lms_server.Helpers;
 using lms_server.Interfaces;
 using lms_server.Models;
@@ -14,11 +15,11 @@ public class AssetRepository : IAssetRepository
     {
         _context = context;
     }
-    public async Task<bool> CreateAssetAsync(Asset asset)
+    public async Task<Asset?> CreateAssetAsync(Asset asset)
     {
-        var succeeded = await _context.Asset.AddAsync(asset);
+        await _context.Asset.AddAsync(asset);
         await _context.SaveChangesAsync();
-        return succeeded != null;
+        return asset;
     }
 
     public async Task<List<Asset>> GetAllAssetsAsync(QueryObject queryObject)
@@ -37,13 +38,13 @@ public class AssetRepository : IAssetRepository
         return asset;
     }
 
-    public async Task<bool> UpdateAssetAsync(int id, Asset asset)
+    public async Task<Asset?> UpdateAssetAsync(int id, UpdateAssetRequest asset)
     {
         var assetModel = await _context.Asset.FirstOrDefaultAsync(x => x.Id == id);
 
         if (assetModel == null)
         {
-            return false;
+            return null;
         }
 
         assetModel.AssetType = asset.AssetType;
@@ -54,6 +55,6 @@ public class AssetRepository : IAssetRepository
         
         _context.Asset.Update(assetModel);
         await _context.SaveChangesAsync();
-        return true;
+        return assetModel;
     }
 }

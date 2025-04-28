@@ -3,6 +3,7 @@ using lms_server.dto.User;
 using lms_server.Interfaces;
 using lms_server.mapper;
 using lms_server.Repositories;
+using lms_server.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,7 +24,7 @@ public class UserController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll() 
     {
-        var users = await _userRepository.GetAllUsersAsync(new QueryObject());
+        var users = await _userRepository.GetAllUsersAsync(new QueryObject(1, 100, "", "", false));
         var userDto = users.Select(user => user.ToUserDto());
         return Ok(userDto);
     }
@@ -52,7 +53,7 @@ public class UserController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateUserRequest userRequest)
     {
-        var userModel = await _userRepository.UpdateUserAsync(id, userRequest.ToUserFromUpdateDto());
+        var userModel = await _userRepository.UpdateUserAsync(id, userRequest);
 
         if(userModel == null)
         {

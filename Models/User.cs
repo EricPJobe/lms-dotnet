@@ -13,6 +13,5 @@ public class User
     public bool IsActive { get; set; }
     public virtual List<Role> Roles { get; set; } = new List<Role>();
     public virtual List<UserRole> UserRoles { get; set; } = new List<UserRole>();
-    public virtual List<UserProfile> UserProfiles { get; set; } = new List<UserProfile>();
     public virtual List<UserAccount> UserAccounts { get; set; } = new List<UserAccount>();
 }

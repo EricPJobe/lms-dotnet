@@ -3,6 +3,7 @@ using lms_server.mapper;
 using lms_server.dto.Role;
 using lms_server.Repositories;
 using lms_server.Interfaces;
+using lms_server.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,7 +24,7 @@ public class RoleController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll() 
     {
-        var roles = await _roleRepository.GetAllRolesAsync(new QueryObject());
+        var roles = await _roleRepository.GetAllRolesAsync(new QueryObject(1, 100, "", "", false));
         var rolesDto = roles.Select(role => role.ToRoleDto());
         return Ok(rolesDto);
     }
@@ -52,7 +53,7 @@ public class RoleController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateRoleRequest roleRequest)
     {
-        var roleModel = await _roleRepository.UpdateRoleAsync(id, roleRequest.ToRoleFromUpdateDto());
+        var roleModel = await _roleRepository.UpdateRoleAsync(id, roleRequest);
 
         if(roleModel == null)
         {

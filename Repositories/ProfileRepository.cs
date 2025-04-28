@@ -1,4 +1,5 @@
 using lms_server.database;
+using lms_server.dto.Profile;
 using lms_server.Helpers;
 using lms_server.Interfaces;
 using lms_server.Models;
@@ -15,11 +16,11 @@ public class ProfileRepository : IProfileRepository
         _context = context;
     }
 
-    public async Task<bool> CreateProfileAsync(Profile profile)
+    public async Task<Profile?> CreateProfileAsync(Profile profile)
     {
-        var succeeded = await _context.Profile.AddAsync(profile);
+        await _context.Profile.AddAsync(profile);
         await _context.SaveChangesAsync();
-        return succeeded != null;
+        return profile;
     }
 
     public async Task<List<Profile>> GetAllProfilesAsync(QueryObject queryObject)
@@ -37,12 +38,12 @@ public class ProfileRepository : IProfileRepository
         return profile;
     }
 
-    public async Task<bool> UpdateProfileAsync(int id, Profile profile)
+    public async Task<Profile?> UpdateProfileAsync(int id, UpdateProfileRequest profile)
     {
         var profileModel = await _context.Profile.FirstOrDefaultAsync(x => x.Id == id);
         if (profileModel == null)
         {
-            return false;
+            return null;
         }
         profileModel.Location = profile.Location;
         profileModel.Bio = profile.Bio;
@@ -52,6 +53,6 @@ public class ProfileRepository : IProfileRepository
 
         _context.Profile.Update(profileModel);
         await _context.SaveChangesAsync();
-        return true;
+        return profileModel;
     }
 }

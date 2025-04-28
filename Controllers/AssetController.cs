@@ -2,6 +2,7 @@ using lms_server.database;
 using lms_server.mapper;
 using lms_server.Repositories;
 using lms_server.Interfaces;
+using lms_server.Helpers;
 using lms_server.dto.Asset;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +24,7 @@ public class AssetController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll() 
     {
-        var assets = await _assetRepository.GetAllAssetsAsync(new QueryObject());
+        var assets = await _assetRepository.GetAllAssetsAsync(new QueryObject(1, 100, "", "", false));
         var assetsDto = assets.Select(asset => asset.ToAssetDto());
         return Ok(assetsDto);
     }
@@ -52,7 +53,7 @@ public class AssetController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateAssetRequest assetRequest)
     {
-        var assetModel = await _assetRepository.UpdateAssetAsync(id, assetRequest.ToAssetFromUpdateDto());
+        var assetModel = await _assetRepository.UpdateAssetAsync(id, assetRequest);
 
         if(assetModel == null)
         {

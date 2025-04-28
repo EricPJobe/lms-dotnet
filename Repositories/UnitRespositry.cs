@@ -15,11 +15,11 @@ public class UnitRepository : IUnitRepository
     {
         _context = context;
     }
-    public async Task<bool> CreateUnitAsync(Unit unitModel)
+    public async Task<Unit?> CreateUnitAsync(Unit unitModel)
     {
-        var succeeded = await _context.Unit.AddAsync(unitModel);
+        await _context.Unit.AddAsync(unitModel);
         await _context.SaveChangesAsync();
-        return succeeded != null;
+        return unitModel;
     }
     public async Task<List<Unit>> GetAllUnitsAsync(QueryObject queryObject)
     {
@@ -46,13 +46,13 @@ public class UnitRepository : IUnitRepository
         return unit;
     }
 
-    public async Task<bool> UpdateUnitAsync(int id, UnitDto userDto)
+    public async Task<Unit?> UpdateUnitAsync(int id, UpdateUnitRequest userDto)
     {
         var unitModel = await _context.Unit.FirstOrDefaultAsync(x => x.Id == id);
 
         if (unitModel == null)
         {
-            return false;
+            return null;
         }
 
         unitModel.Name = userDto.Name;
@@ -66,6 +66,6 @@ public class UnitRepository : IUnitRepository
 
         _context.Unit.Update(unitModel);
         await _context.SaveChangesAsync();
-        return true;
+        return unitModel;
     }
 }

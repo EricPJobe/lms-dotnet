@@ -1,6 +1,9 @@
 using lms_server.database;
 using lms_server.mapper;
 using lms_server.dto.Account;
+using lms_server.Repositories;
+using lms_server.Interfaces;
+using lms_server.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +23,7 @@ public class AccountController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll() 
     {
-        var accounts = await _accountRepository.GetAllAccountsAsync(new QueryObject());
+        var accounts = await _accountRepository.GetAllAccountsAsync(new QueryObject(1, 100, "", "", false));
         var accountsDto = accounts.Select(account => account.ToAccountDto());
         return Ok(accountsDto);
     }
@@ -48,7 +51,7 @@ public class AccountController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateAccountRequest accountRequest)
     {
-        var accountModel = await _accountRepository.UpdateAccountAsync(id, accountRequest.ToAccountFromUpdateDto());
+        var accountModel = await _accountRepository.UpdateAccountAsync(id, accountRequest);
 
         if(accountModel == null)
         {

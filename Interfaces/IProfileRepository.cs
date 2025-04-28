@@ -1,3 +1,4 @@
+using lms_server.dto.Profile;
 using lms_server.Helpers;
 using lms_server.Models;
 
@@ -7,6 +8,6 @@ public interface IProfileRepository
 {
     Task<Profile> GetProfileByIdAsync(int id);
     Task<List<Profile>> GetAllProfilesAsync(QueryObject queryObject);
-    Task<bool> CreateProfileAsync(Profile profile);
-    Task<bool> UpdateProfileAsync(int id, Profile profile);
+    Task<Profile?> CreateProfileAsync(Profile profile);
+    Task<Profile?> UpdateProfileAsync(int id, UpdateProfileRequest profile);
 }

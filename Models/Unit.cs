@@ -11,6 +11,6 @@ public class Unit
     public DateTime? UpdatedTS { get; set; }
     public bool IsActive { get; set; }
     public int CourseID { get; set; }
-    public virtual List<UnitCourse> UnitCourses { get; set; } = new List<UnitCourse>();
+    // public virtual List<UnitCourse> UnitCourses { get; set; } = new List<UnitCourse>();
 
 }

@@ -3,6 +3,7 @@ using lms_server.mapper;
 using lms_server.dto.Course;
 using lms_server.Repositories;
 using lms_server.Interfaces;
+using lms_server.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,7 +24,7 @@ public class CourseController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll() 
     {
-        var courses = await _courseRepository.GetAllCoursesAsync(new QueryObject());
+        var courses = await _courseRepository.GetAllCoursesAsync(new QueryObject(1, 100, "", "", false));
         var coursesDto = courses.Select(course => course.ToCourseDto());
         return Ok(coursesDto);
     }
@@ -52,7 +53,7 @@ public class CourseController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCourseRequest courseRequest)
     {
-        var courseModel = await _courseRepository.UpdateCourseAsync(id, courseRequest.ToCourseFromUpdateDto());
+        var courseModel = await _courseRepository.UpdateCourseAsync(id, courseRequest);
         if(courseModel == null)
         {
             return NotFound();

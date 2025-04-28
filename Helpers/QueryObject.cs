@@ -2,13 +2,13 @@ namespace lms_server.Helpers;
 
 public class QueryObject
 {
-    public int Page { get; set; } = 1;
-    public int PageSize { get; set; } = 10;
+    public int? Page { get; set; } = 1;
+    public int? PageSize { get; set; } = 100;
     public string? Search { get; set; }
     public string? SortBy { get; set; }
-    public bool Descending { get; set; } = false;
+    public bool? Descending { get; set; } = false;
 
-    public QueryObject(int page, int pageSize, string? search, string? sortBy, bool descending)
+    public QueryObject(int? page, int? pageSize, string? search, string? sortBy, bool? descending)
     {
         Page = page;
         PageSize = pageSize;

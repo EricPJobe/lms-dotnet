@@ -9,6 +9,6 @@ public interface IUnitRepository
     Task<Unit?> GetUnitByIdAsync(int id);
     Task<Unit?> GetUnitByUnitnameAsync(string username);
     Task<List<Unit>> GetAllUnitsAsync(QueryObject queryObject);
-    Task<bool> CreateUnitAsync(Unit userModel);
-    Task<bool> UpdateUnitAsync(int id, UnitDto user);
-}    
+    Task<Unit?> CreateUnitAsync(Unit userModel);
+    Task<Unit?> UpdateUnitAsync(int id, UpdateUnitRequest user);
+}

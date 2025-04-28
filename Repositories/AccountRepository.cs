@@ -1,4 +1,5 @@
 using lms_server.database;
+using lms_server.dto.Account;
 using lms_server.Helpers;
 using lms_server.Interfaces;
 using lms_server.Models;
@@ -25,11 +26,11 @@ public class AccountRepository : IAccountRepository
         return await _context.SaveChangesAsync() != 0 ? true : false;  
     }
 
-    public async Task<bool> CreateAccountAsync(Account account)
+    public async Task<Account?> CreateAccountAsync(Account account)
     {
-        var succeeded = await _context.Account.AddAsync(account);
+        await _context.Account.AddAsync(account);
         await _context.SaveChangesAsync();
-        return succeeded != null;
+        return account ;
     }
 
     public async Task<Account> GetAccountByIdAsync(int id)
@@ -47,13 +48,13 @@ public class AccountRepository : IAccountRepository
         return _context.Account.ToListAsync();
     }
 
-    public async Task<bool> UpdateAccountAsync(int id, Account account)
+    public async Task<Account?> UpdateAccountAsync(int id, UpdateAccountRequest account)
     {
         var accountModel = await _context.Account.FirstOrDefaultAsync(x => x.Id == id);
 
         if (accountModel == null)
         {
-            return false;
+            return null;
         }
 
         accountModel.SubType = account.SubType;
@@ -64,6 +65,6 @@ public class AccountRepository : IAccountRepository
 
         _context.Account.Update(accountModel);
         await _context.SaveChangesAsync();
-        return true;
+        return accountModel;
     }
 }

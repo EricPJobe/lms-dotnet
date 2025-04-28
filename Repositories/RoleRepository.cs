@@ -15,11 +15,11 @@ public class RoleRepository : IRoleRepository
     {
         _context = context;
     }
-    public async Task<bool> CreateRoleAsync(Role roleModel)
+    public async Task<Role?> CreateRoleAsync(Role roleModel)
     {
-        var succeeded = await _context.Role.AddAsync(roleModel);
+        await _context.Role.AddAsync(roleModel);
         await _context.SaveChangesAsync();
-        return succeeded != null;
+        return roleModel;
     }
 
     public async Task<List<Role>> GetAllRolesAsync(QueryObject queryObject)
@@ -37,13 +37,13 @@ public class RoleRepository : IRoleRepository
         return role;
     }
 
-    public async Task<bool> UpdateRoleAsync(int id, Role role)
+    public async Task<Role?> UpdateRoleAsync(int id, UpdateRoleRequest role)
     {
         var roleModel = await _context.Role.FirstOrDefaultAsync(x => x.Id == id);
 
         if (roleModel == null)
         {
-            return false;
+            return null;
         }
 
         roleModel.RoleName = role.RoleName;
@@ -52,6 +52,6 @@ public class RoleRepository : IRoleRepository
 
         _context.Role.Update(roleModel);
         await _context.SaveChangesAsync();
-        return true;
+        return roleModel;
     }
 }

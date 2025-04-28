@@ -1,4 +1,5 @@
 using lms_server.database;
+using lms_server.dto.Course;
 using lms_server.Helpers;
 using lms_server.Interfaces;
 using lms_server.Models;
@@ -25,11 +26,11 @@ public class CourseRepository : ICourseRepository
         return await _context.SaveChangesAsync() != 0 ? true : false;   
     }
 
-    public async Task<bool> CreateCourseAsync(Course course)
+    public async Task<Course?> CreateCourseAsync(Course course)
     {
-        var succeeded = await _context.Course.AddAsync(course);
+        await _context.Course.AddAsync(course);
         await _context.SaveChangesAsync();
-        return succeeded != null;
+        return course;
     }
 
     public async Task<List<Course>> GetAllCoursesAsync(QueryObject queryObject)
@@ -48,13 +49,13 @@ public class CourseRepository : ICourseRepository
         return course;
     }
 
-    public async Task<bool> UpdateCourseAsync(int id, Course course)
+    public async Task<Course?> UpdateCourseAsync(int id, UpdateCourseRequest course)
     {
         var courseModel = await _context.Course.FirstOrDefaultAsync(x => x.Id == id);
 
         if (courseModel == null)
         {
-            return false;
+            return null;
         }
 
         courseModel.Name = course.Name;
@@ -66,6 +67,10 @@ public class CourseRepository : ICourseRepository
 
         _context.Course.Update(courseModel);
         await _context.SaveChangesAsync();
-        return true;
+        return courseModel;
+    }
+    public async Task<bool> CourseExists(int courseId)
+    {
+        return await _context.Course.AnyAsync(x => x.Id == courseId);
     }
 }

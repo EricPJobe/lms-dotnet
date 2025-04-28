@@ -25,11 +25,11 @@ public class UserRepository : IUserRepository
         return await _context.SaveChangesAsync() != 0 ? true : false;        
     }
 
-    public async Task<bool> CreateUserAsync(User userModel)
+    public async Task<User?> CreateUserAsync(User userModel)
     {
-        var succeeded = await _context.User.AddAsync(userModel);
+        await _context.User.AddAsync(userModel);
         await _context.SaveChangesAsync();
-        return succeeded != null;
+        return userModel;
     }
 
     public async Task<List<User>> GetAllUsersAsync(QueryObject queryObject)
@@ -67,12 +67,12 @@ public class UserRepository : IUserRepository
         return user;
     }
 
-    public async Task<bool> UpdateUserAsync(int id, UserDto userDto)
+    public async Task<User?> UpdateUserAsync(int id, UpdateUserRequest userDto)
     {
         var userModel = await _context.User.FirstOrDefaultAsync(x => x.Id == id);
         if (userModel == null)
         {
-            return false;
+            return null;
         }
         
         userModel.Title = userDto.Title;
@@ -86,6 +86,6 @@ public class UserRepository : IUserRepository
         _context.User.Update(userModel);
         await _context.SaveChangesAsync();
         
-        return true;    
+        return userModel;    
     }
 }

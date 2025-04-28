@@ -1,3 +1,4 @@
+using lms_server.dto.Role;
 using lms_server.Helpers;
 using lms_server.Models;
 
@@ -7,6 +8,6 @@ public interface IRoleRepository
 {
     Task<Role> GetRoleByIdAsync(int id);
     Task<List<Role>> GetAllRolesAsync(QueryObject queryObject);
-    Task<bool> CreateRoleAsync(Role role);
-    Task<bool> UpdateRoleAsync(int id, Role role);
+    Task<Role?> CreateRoleAsync(Role role);
+    Task<Role?> UpdateRoleAsync(int id, UpdateRoleRequest role);
 }
