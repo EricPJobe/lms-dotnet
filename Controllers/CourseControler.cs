@@ -22,14 +22,14 @@ public class CourseController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll() 
+    public async Task<IActionResult> GetAll([FromQuery] QueryObject queryObject) 
     {
-        var courses = await _courseRepository.GetAllCoursesAsync(new QueryObject(1, 100, "", "", false));
+        var courses = await _courseRepository.GetAllCoursesAsync(queryObject);
         var coursesDto = courses.Select(course => course.ToCourseDto());
         return Ok(coursesDto);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
         var course = await _courseRepository.GetCourseByIdAsync(id);
@@ -50,7 +50,7 @@ public class CourseController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = courseModel.Id }, courseModel.ToCourseDto());
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCourseRequest courseRequest)
     {
         var courseModel = await _courseRepository.UpdateCourseAsync(id, courseRequest);

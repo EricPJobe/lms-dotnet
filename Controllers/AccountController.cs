@@ -21,14 +21,14 @@ public class AccountController : ControllerBase
         _context = context;
     }
     [HttpGet]
-    public async Task<IActionResult> GetAll() 
+    public async Task<IActionResult> GetAll([FromQuery] QueryObject queryObject) 
     {
-        var accounts = await _accountRepository.GetAllAccountsAsync(new QueryObject(1, 100, "", "", false));
+        var accounts = await _accountRepository.GetAllAccountsAsync(queryObject);
         var accountsDto = accounts.Select(account => account.ToAccountDto());
         return Ok(accountsDto);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
         var account = await _accountRepository.GetAccountByIdAsync(id);
@@ -48,7 +48,7 @@ public class AccountController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = accountModel.Id }, accountModel.ToAccountDto());
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateAccountRequest accountRequest)
     {
         var accountModel = await _accountRepository.UpdateAccountAsync(id, accountRequest);

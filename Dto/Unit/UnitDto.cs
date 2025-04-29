@@ -6,7 +6,7 @@ public class UnitDto
     public string Author { get; set; } = string.Empty;
     public string Level { get; set; } = string.Empty;
     public string UnitType { get; set; } = string.Empty;
-    public int UnitNumber { get; set; }
+    public string UnitNumber { get; set; } = string.Empty;
     public int CourseID { get; set; }
     public DateTime CreatedTS { get; set; }
     public DateTime? UpdatedTS { get; set; }

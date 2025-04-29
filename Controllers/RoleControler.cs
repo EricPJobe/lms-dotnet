@@ -22,14 +22,14 @@ public class RoleController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll() 
+    public async Task<IActionResult> GetAll([FromQuery] QueryObject queryObject) 
     {
-        var roles = await _roleRepository.GetAllRolesAsync(new QueryObject(1, 100, "", "", false));
+        var roles = await _roleRepository.GetAllRolesAsync(queryObject);
         var rolesDto = roles.Select(role => role.ToRoleDto());
         return Ok(rolesDto);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
         var role = await _roleRepository.GetRoleByIdAsync(id);
@@ -50,7 +50,7 @@ public class RoleController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = roleModel.Id }, roleModel.ToRoleDto());
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateRoleRequest roleRequest)
     {
         var roleModel = await _roleRepository.UpdateRoleAsync(id, roleRequest);

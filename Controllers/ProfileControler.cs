@@ -23,14 +23,14 @@ public class ProfileController : ControllerBase
   
 
     [HttpGet]
-    public async Task<IActionResult> GetAll() 
+    public async Task<IActionResult> GetAll([FromQuery] QueryObject queryObject) 
     {
-        var profiles = await _profileRepository.GetAllProfilesAsync(new QueryObject(1, 100, "", "", false));
+        var profiles = await _profileRepository.GetAllProfilesAsync(queryObject);
         var profilesDto = profiles.Select(profile => profile.ToProfileDto());
         return Ok(profilesDto);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
         var profile = await _profileRepository.GetProfileByIdAsync(id);
@@ -51,7 +51,7 @@ public class ProfileController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = profileModel.Id }, profileModel.ToProfileDto());
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateProfileRequest profileRequest)
     {
         var profileModel = await _profileRepository.UpdateProfileAsync(id, profileRequest);

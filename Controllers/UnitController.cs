@@ -24,14 +24,14 @@ public class UnitController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll() 
+    public async Task<IActionResult> GetAll([FromQuery] QueryObject queryObject) 
     {
-        var units = await _unitRepository.GetAllUnitsAsync(new QueryObject(1, 100, "", "", false));
+        var units = await _unitRepository.GetAllUnitsAsync(queryObject);
         var unitsDto = units.Select(unit => unit.ToUnitDto());
         return Ok(unitsDto);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
         var unit = await _unitRepository.GetUnitByIdAsync(id);
@@ -44,7 +44,7 @@ public class UnitController : ControllerBase
         return Ok(unit.ToUnitDto());
     }
 
-    [HttpPost("{courseId}")]
+    [HttpPost("{courseId:int}")]
     public async Task<IActionResult> Create([FromRoute] int courseId, [FromBody] CreateUnitRequest unitRequest)
     {
         if (!await _courseRepository.CourseExists(courseId))
@@ -56,7 +56,7 @@ public class UnitController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = unitModel.Id }, unitModel.ToUnitDto());
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateUnitRequest unitRequest)
     {
         var unitModel = await _unitRepository.UpdateUnitAsync(id, unitRequest);

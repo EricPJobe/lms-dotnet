@@ -22,16 +22,26 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll() 
+    public async Task<IActionResult> GetAll([FromQuery] QueryObject queryObject) 
     {
-        var users = await _userRepository.GetAllUsersAsync(new QueryObject(1, 100, "", "", false));
+        if(!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        var query = HttpContext.Request.Query;
+        var users = await _userRepository.GetAllUsersAsync(queryObject);
         var userDto = users.Select(user => user.ToUserDto());
         return Ok(userDto);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
+        if(!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
         var user = await _userRepository.GetUserByIdAsync(id);
 
         if(user == null)
@@ -45,14 +55,24 @@ public class UserController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateUserRequest userRequest)
     {
+        if(!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
         var userModel = userRequest.ToUserFromCreateDto();
         await _userRepository.CreateUserAsync(userModel);
         return CreatedAtAction(nameof(GetById), new { id = userModel.Id }, userModel.ToUserDto());
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateUserRequest userRequest)
     {
+        if(!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
         var userModel = await _userRepository.UpdateUserAsync(id, userRequest);
 
         if(userModel == null)

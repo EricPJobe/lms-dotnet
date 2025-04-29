@@ -22,14 +22,14 @@ public class AssetController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll() 
+    public async Task<IActionResult> GetAll([FromQuery] QueryObject queryObject) 
     {
-        var assets = await _assetRepository.GetAllAssetsAsync(new QueryObject(1, 100, "", "", false));
+        var assets = await _assetRepository.GetAllAssetsAsync(queryObject);
         var assetsDto = assets.Select(asset => asset.ToAssetDto());
         return Ok(assetsDto);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
         var asset = await _assetRepository.GetAssetByIdAsync(id);
@@ -50,7 +50,7 @@ public class AssetController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = assetModel.Id }, assetModel.ToAssetDto());
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateAssetRequest assetRequest)
     {
         var assetModel = await _assetRepository.UpdateAssetAsync(id, assetRequest);
