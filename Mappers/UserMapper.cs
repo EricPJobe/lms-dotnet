@@ -14,8 +14,8 @@ public static class UserMapper
             Title = userModel.Title,
             FirstName = userModel.FirstName,
             LastName = userModel.LastName,
-            UserName = userModel.UserName,
-            Email = userModel.Email,
+            // UserName = userModel.UserName,
+            // Email = userModel.Email,
             CreatedTS = userModel.CreatedTS,
             UpdatedTS = userModel.UpdatedTS,
             IsActive = userModel.IsActive,
@@ -30,8 +30,8 @@ public static class UserMapper
             Title = userRequest.Title,
             FirstName = userRequest.FirstName,
             LastName = userRequest.LastName,
-            UserName = userRequest.UserName,
-            Email = userRequest.Email,
+            // UserName = userRequest.UserName,
+            // Email = userRequest.Email,
             CreatedTS = userRequest.CreatedTS,
             UpdatedTS = userRequest.UpdatedTS,
             IsActive = userRequest.IsActive    
@@ -43,8 +43,8 @@ public static class UserMapper
         userModel.Title = userRequest.Title;
         userModel.FirstName = userRequest.FirstName;
         userModel.LastName = userRequest.LastName;
-        userModel.UserName = userRequest.UserName;
-        userModel.Email = userRequest.Email;
+        // userModel.UserName = userRequest.UserName;
+        // userModel.Email = userRequest.Email;
         userModel.CreatedTS = userRequest.CreatedTS;
         userModel.UpdatedTS = userRequest.UpdatedTS;
         userModel.IsActive = userRequest.IsActive;

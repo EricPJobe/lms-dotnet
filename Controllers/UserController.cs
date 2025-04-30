@@ -6,6 +6,9 @@ using lms_server.Repositories;
 using lms_server.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using lms_server.Models;
+using lms_server.dto.Login;
 
 namespace lms_server.controllers;
 
@@ -13,12 +16,72 @@ namespace lms_server.controllers;
 [ApiController]
 public class UserController : ControllerBase
 {
+    private readonly UserManager<User> _userManager;
     private readonly ApplicationDBContext _context;
     private readonly IUserRepository _userRepository;
-    public UserController(ApplicationDBContext context, IUserRepository userRepository)
+    public UserController(UserManager<User> userManager, ApplicationDBContext context, IUserRepository userRepository)
     {
         _userRepository = userRepository;
         _context = context;
+        _userManager = userManager;
+    }
+
+    // [HttpPost("login")]
+    // public async Task<IActionResult> Login(LoginDto loginDto)
+    // {
+
+    // }
+
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
+    {
+        try
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
+            var user = new User
+            {
+                UserName = registerDto.UserName,
+                Email = registerDto.Email,
+                FirstName = registerDto.FirstName,
+                LastName = registerDto.LastName,
+                Title = registerDto.Title,
+                IsActive = registerDto.IsActive,
+                CreatedTS = DateTime.UtcNow,
+                UpdatedTS = DateTime.UtcNow
+            };
+
+            var result = await _userManager.CreateAsync(user, registerDto.Password);
+
+            if(result.Succeeded)
+            {
+                var roleResult = await _userManager.AddToRoleAsync(user, "User");
+                if(roleResult.Succeeded)
+                {
+                    await _userRepository.AssignRolesToUserAsync(user.Id, new List<int> { 1 });
+                    return Ok(
+                        new NewUserDto
+                        {
+                            UserName = user.UserName,
+                            Email = user.Email,
+
+                        }
+                    );
+                }
+                else
+                {
+                    return StatusCode(500, roleResult.Errors);
+                }
+            }
+            return StatusCode(500, result.Errors);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
     }
 
     [HttpGet]
@@ -35,7 +98,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById([FromRoute] int id)
+    public async Task<IActionResult> GetById([FromRoute] string id)
     {
         if(!ModelState.IsValid)
         {
@@ -66,7 +129,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateUserRequest userRequest)
+    public async Task<IActionResult> Update([FromRoute] string id, [FromBody] UpdateUserRequest userRequest)
     {
         if(!ModelState.IsValid)
         {

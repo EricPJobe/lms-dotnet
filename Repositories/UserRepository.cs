@@ -15,7 +15,7 @@ public class UserRepository : IUserRepository
     {
         _context = context;
     }
-    public async Task<bool> AssignRolesToUserAsync(int userId, List<int> roleIds)
+    public async Task<bool> AssignRolesToUserAsync(string userId, List<int> roleIds)
     {
         await _context.UserRole.AddRangeAsync(roleIds.Select(roleId => new UserRole
         {
@@ -47,7 +47,7 @@ public class UserRepository : IUserRepository
         return user;
     }
 
-    public async Task<User?> GetUserByIdAsync(int id)
+    public async Task<User?> GetUserByIdAsync(string id)
     {
         var user = await _context.User.FirstOrDefaultAsync(x => x.Id == id);
         if (user == null)
@@ -67,7 +67,7 @@ public class UserRepository : IUserRepository
         return user;
     }
 
-    public async Task<User?> UpdateUserAsync(int id, UpdateUserRequest userDto)
+    public async Task<User?> UpdateUserAsync(string id, UpdateUserRequest userDto)
     {
         var userModel = await _context.User.FirstOrDefaultAsync(x => x.Id == id);
         if (userModel == null)

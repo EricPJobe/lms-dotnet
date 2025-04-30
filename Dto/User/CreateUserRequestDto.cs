@@ -5,7 +5,7 @@ namespace lms_server.dto.User;
 
 public class CreateUserRequest
 {
-    public int Id { get; set; }
+    public string Id { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
     [Required]
     public string FirstName { get; set; } = string.Empty;

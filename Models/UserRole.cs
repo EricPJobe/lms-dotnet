@@ -2,7 +2,7 @@ namespace lms_server.Models;
 public class UserRole
 {
     public int Id { get; set; }
-    public int UserId { get; set; }
+    public string UserId { get; set; } = string.Empty;
     public int RoleId { get; set; }
     public DateTime CreatedTS { get; set; } = DateTime.Now;
     public DateTime? UpdatedTS { get; set; }
