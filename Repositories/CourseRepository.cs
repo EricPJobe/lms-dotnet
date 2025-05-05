@@ -63,7 +63,7 @@ public class CourseRepository : ICourseRepository
         courseModel.Level = course.Level;
         courseModel.Topic = course.Topic;
         courseModel.IsActive = course.IsActive;
-        courseModel.UpdatedTS = DateTime.UtcNow;
+        // courseModel.UpdatedTS = DateTime.UtcNow;
 
         _context.Course.Update(courseModel);
         await _context.SaveChangesAsync();

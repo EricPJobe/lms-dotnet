@@ -60,7 +60,7 @@ public class UnitRepository : IUnitRepository
         unitModel.Level = userDto.Level;
         unitModel.UnitType = userDto.UnitType;
         unitModel.UnitNumber = userDto.UnitNumber;
-        unitModel.UpdatedTS = DateTime.UtcNow;
+        // unitModel.UpdatedTS = DateTime.UtcNow;
         unitModel.IsActive = userDto.IsActive;
         unitModel.CourseID = userDto.CourseID;
 

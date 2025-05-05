@@ -51,7 +51,7 @@ public class AssetRepository : IAssetRepository
         assetModel.Reference = asset.Reference;
         assetModel.Description = asset.Description;
         assetModel.IsActive = asset.IsActive;
-        assetModel.UpdatedTS = DateTime.UtcNow;
+        // assetModel.UpdatedTS = DateTime.UtcNow;
         
         _context.Asset.Update(assetModel);
         await _context.SaveChangesAsync();

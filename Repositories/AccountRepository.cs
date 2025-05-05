@@ -57,11 +57,11 @@ public class AccountRepository : IAccountRepository
             return null;
         }
 
-        accountModel.SubType = account.SubType;
-        accountModel.UserID = account.UserID;
+        accountModel.SubscriptionType = account.SubscriptionType;
+        // accountModel.UserID = account.UserID;
         accountModel.AccountDueTS = account.AccountDueTS;
         accountModel.IsActive = account.IsActive;
-        accountModel.UpdatedTS = DateTime.UtcNow;
+        // accountModel.UpdatedTS = DateTime.UtcNow;
 
         _context.Account.Update(accountModel);
         await _context.SaveChangesAsync();

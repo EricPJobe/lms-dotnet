@@ -14,8 +14,8 @@ public static class CourseMapper
             Author = courseModel.Author,
             Level = courseModel.Level,
             Topic = courseModel.Topic,
-            CreatedTS = courseModel.CreatedTS,
-            UpdatedTS = courseModel.UpdatedTS,
+            // CreatedTS = courseModel.CreatedTS,
+            // UpdatedTS = courseModel.UpdatedTS,
             IsActive = courseModel.IsActive,
         };
     }
@@ -27,8 +27,8 @@ public static class CourseMapper
             Author = courseRequest.Author,
             Level = courseRequest.Level,
             Topic = courseRequest.Topic,
-            CreatedTS = courseRequest.CreatedTS,
-            UpdatedTS = courseRequest.UpdatedTS,
+            // CreatedTS = courseRequest.CreatedTS,
+            // UpdatedTS = courseRequest.UpdatedTS,
             IsActive = courseRequest.IsActive,
         };
     }  
@@ -38,8 +38,8 @@ public static class CourseMapper
         courseModel.Author = courseRequest.Author;
         courseModel.Level = courseRequest.Level;
         courseModel.Topic = courseRequest.Topic;
-        courseModel.CreatedTS = courseRequest.CreatedTS;
-        courseModel.UpdatedTS = courseRequest.UpdatedTS;
+        // courseModel.CreatedTS = courseRequest.CreatedTS;
+        // courseModel.UpdatedTS = courseRequest.UpdatedTS;
         courseModel.IsActive = courseRequest.IsActive;
 
         return courseModel;

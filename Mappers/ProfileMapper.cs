@@ -12,9 +12,9 @@ public static class ProfileMapper
             Id = profileModel.Id,
             Location = profileModel.Location,
             Bio = profileModel.Bio,
-            UserID = profileModel.UserID,
-            CreatedTS = profileModel.CreatedTS,
-            UpdatedTS = profileModel.UpdatedTS,
+            AppUserId = profileModel.AppUserId,
+            // CreatedTS = profileModel.CreatedTS,
+            // UpdatedTS = profileModel.UpdatedTS,
             IsActive = profileModel.IsActive,
         };
     }
@@ -25,9 +25,9 @@ public static class ProfileMapper
         {
             Location = profileRequest.Location,
             Bio = profileRequest.Bio,
-            UserID = profileRequest.UserID,
-            CreatedTS = profileRequest.CreatedTS,
-            UpdatedTS = profileRequest.UpdatedTS,
+            AppUserId = profileRequest.AppUserId,
+            // CreatedTS = profileRequest.CreatedTS,
+            // UpdatedTS = profileRequest.UpdatedTS,
             IsActive = profileRequest.IsActive,
         };
     }
@@ -35,9 +35,9 @@ public static class ProfileMapper
     {
         profileModel.Location = profileRequest.Location;
         profileModel.Bio = profileRequest.Bio;
-        profileModel.UserID = profileRequest.UserID;
-        profileModel.CreatedTS = profileRequest.CreatedTS;
-        profileModel.UpdatedTS = profileRequest.UpdatedTS;
+        profileModel.AppUserId = profileRequest.AppUserId;
+        // profileModel.CreatedTS = profileRequest.CreatedTS;
+        // profileModel.UpdatedTS = profileRequest.UpdatedTS;
         profileModel.IsActive = profileRequest.IsActive;
 
         return profileModel;

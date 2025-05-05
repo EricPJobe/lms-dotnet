@@ -13,8 +13,8 @@ public static class AssetMapper
             AssetType = assetModel.AssetType,
             Reference = assetModel.Reference,
             Description = assetModel.Description,
-            CreatedTS = assetModel.CreatedTS,
-            UpdatedTS = assetModel.UpdatedTS,
+            // CreatedTS = assetModel.CreatedTS,
+            // UpdatedTS = assetModel.UpdatedTS,
             IsActive = assetModel.IsActive,
         };
     }
@@ -26,8 +26,8 @@ public static class AssetMapper
             AssetType = assetRequest.AssetType,
             Reference = assetRequest.Reference,
             Description = assetRequest.Description,
-            CreatedTS = assetRequest.CreatedTS,
-            UpdatedTS = assetRequest.UpdatedTS,
+            // CreatedTS = assetRequest.CreatedTS,
+            // UpdatedTS = assetRequest.UpdatedTS,
             IsActive = assetRequest.IsActive,
         };
     }
@@ -36,8 +36,8 @@ public static class AssetMapper
         assetModel.AssetType = assetRequest.AssetType;
         assetModel.Reference = assetRequest.Reference;
         assetModel.Description = assetRequest.Description;
-        assetModel.CreatedTS = assetRequest.CreatedTS;
-        assetModel.UpdatedTS = assetRequest.UpdatedTS;
+        // assetModel.CreatedTS = assetRequest.CreatedTS;
+        // assetModel.UpdatedTS = assetRequest.UpdatedTS;
         assetModel.IsActive = assetRequest.IsActive;
 
         return assetModel;

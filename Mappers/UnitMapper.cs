@@ -16,8 +16,8 @@ public static class UnitMapper
             UnitType = unitModel.UnitType,
             UnitNumber = unitModel.UnitNumber,
             CourseID = unitModel.CourseID,
-            CreatedTS = unitModel.CreatedTS,
-            UpdatedTS = unitModel.UpdatedTS,
+            // CreatedTS = unitModel.CreatedTS,
+            // UpdatedTS = unitModel.UpdatedTS,
             IsActive = unitModel.IsActive,
         };
     }
@@ -30,8 +30,8 @@ public static class UnitMapper
             Level = unitRequest.Level,
             UnitType = unitRequest.UnitType,
             UnitNumber = unitRequest.UnitNumber,
-            CreatedTS = unitRequest.CreatedTS,
-            UpdatedTS = unitRequest.UpdatedTS,
+            // CreatedTS = unitRequest.CreatedTS,
+            // UpdatedTS = unitRequest.UpdatedTS,
             IsActive = unitRequest.IsActive,
         };
     }
@@ -42,8 +42,8 @@ public static class UnitMapper
         unitModel.Level = unitRequest.Level;
         unitModel.UnitType = unitRequest.UnitType;
         unitModel.UnitNumber = unitRequest.UnitNumber;
-        unitModel.CreatedTS = unitRequest.CreatedTS;
-        unitModel.UpdatedTS = unitRequest.UpdatedTS;
+        // unitModel.CreatedTS = unitRequest.CreatedTS;
+        // unitModel.UpdatedTS = unitRequest.UpdatedTS;
         unitModel.IsActive = unitRequest.IsActive;
 
         return unitModel;

@@ -47,9 +47,9 @@ public class ProfileRepository : IProfileRepository
         }
         profileModel.Location = profile.Location;
         profileModel.Bio = profile.Bio;
-        profileModel.UserID = profile.UserID;
+        profileModel.AppUserId = profile.AppUserId;
         profileModel.IsActive = profile.IsActive;
-        profileModel.UpdatedTS = DateTime.UtcNow;
+        // profileModel.UpdatedTS = DateTime.UtcNow;
 
         _context.Profile.Update(profileModel);
         await _context.SaveChangesAsync();

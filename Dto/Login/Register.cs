@@ -15,7 +15,9 @@ public class RegisterDto
     public string FirstName { get; set; } = string.Empty;
     [Required]
     public string LastName { get; set; } = string.Empty;
-    public DateTime CreatedTS { get; set; } = DateTime.UtcNow;
-    public DateTime? UpdatedTS { get; set; }
+    public DateTime? AccountDueTS { get; set; }
+    // public DateTime CreatedTS { get; set; } = DateTime.UtcNow;
+    // public DateTime? UpdatedTS { get; set; }
+    public string SubscriptionType { get; set; } = string.Empty;
     public bool IsActive { get; set; } = true;
 }

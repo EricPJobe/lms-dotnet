@@ -7,8 +7,8 @@ public class Unit
     public string Level { get; set; } = string.Empty;
     public string UnitType { get; set; } = string.Empty;
     public string UnitNumber { get; set; } = string.Empty;
-    public DateTime CreatedTS { get; set; } = DateTime.Now;
-    public DateTime? UpdatedTS { get; set; }
+    // public DateTime CreatedTS { get; set; } = DateTime.Now;
+    // public DateTime? UpdatedTS { get; set; }
     public bool IsActive { get; set; }
     public int CourseID { get; set; }
     // public virtual List<UnitCourse> UnitCourses { get; set; } = new List<UnitCourse>();
