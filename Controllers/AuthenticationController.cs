@@ -41,17 +41,32 @@ public class AuthenticationController : ControllerBase
 
         var result = await _signinManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
-        if (!result.Succeeded) return Unauthorized("Username not found and/or password incorrect");
+        var account = new Account();
+
+        if (result.Succeeded && user.UserName != null)
+        { 
+            account = await _accountRepository.GetAccountByUserNameAsync(user.UserName);
+        }
+        else
+            return Unauthorized("Username not found and/or password incorrect");
 
 #pragma warning disable CS8601 // Possible null reference assignment.
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         return Ok(
             new NewUserDto
             {
+                Id = user.Id,
                 UserName = user.UserName,
                 Email = user.Email,
+                FirstName = account.FirstName,
+                LastName = account.LastName,
+                Title = account.Title,
+                SubscriptionType = account.SubscriptionType,
+                AccountDueTS = account.AccountDueTS,
                 Token = _tokenService.CreateToken(user)
             }
         );
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 #pragma warning restore CS8601 // Possible null reference assignment.
     }
 
@@ -68,7 +83,6 @@ public class AuthenticationController : ControllerBase
                 UserName = registerDto.UserName,
                 Email = registerDto.Email
             };
-
 
             var createdUser = await _userManager.CreateAsync(appUser, registerDto.Password);
             
@@ -128,8 +142,8 @@ public class AuthenticationController : ControllerBase
         return Ok(accountsDto);
     }
 
-    [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById([FromRoute] int id)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById([FromRoute] string id)
     {
         var account = await _accountRepository.GetAccountByIdAsync(id);
         if(account == null)
@@ -148,7 +162,7 @@ public class AuthenticationController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = accountModel.Id }, accountModel.ToAccountDto());
     }
 
-    [HttpPut("{id:int}")]
+    [HttpPut("{id}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateAccountRequest accountRequest)
     {
         var accountModel = await _accountRepository.UpdateAccountAsync(id, accountRequest);
@@ -160,4 +174,16 @@ public class AuthenticationController : ControllerBase
         
         return Ok(accountModel.ToAccountDto());
     }
+
+    // [HttpGet("{userName}")]
+    // public async Task<IActionResult> GetByUserName([FromRoute] string userName)
+    // {
+    //     var account = await _accountRepository.GetAccountByUserNameAsync(userName);
+    //     if(account == null)
+    //     {
+    //         return NotFound();
+    //     }
+        
+    //     return Ok(account.ToAccountDto());
+    // }
 }

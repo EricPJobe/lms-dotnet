@@ -1,0 +1,43 @@
+Parsing,Lemma,Dictionary Form,Gloss
+csmn1-----,ὁ,ὁ,the
+nsmn2-----,Ἀνδρόνικος,Ἀνδρόνικος,Andronicus
+csmn1-----,καὶ,καί,and
+nsmn3-----,ἀνὴρ,ἀνήρ,man
+asmn2-----,Ῥωμαῖος,Ῥωμαῖος,Roman
+v-----pai3s,ἐστιν,εἰμί,is
+nsmn3-----,Αὐτὸς,αὐτός,he
+asmn2-----,Ἰουδαίος,Ἰουδαῖος,"Jewish, a Jew"
+csmn1-----,τε,τε,and
+asmn2-----,Ῥωμαῖος,Ῥωμαῖος,Roman
+v-----pai3s,ἑστιν,εἰμί,is
+csmn1-----,ὁ,ὁ,the
+nsmn2-----,Ἀνδρόνικος,Ἀνδρόνικος,Andronicus
+asfn1-----,τὴν,ὁ,the
+asfn3-----,Ἑλληνικὴν,Ἑλληνικός,Greek
+asfn3-----,γλῶσσαν,γλῶσσα,language
+nsmn3-----,αὐτὸς,αὐτός,he
+v-----pai3s,λαλεῖ,λαλέω,speaks
+csmn1-----,καὶ,καί,and
+asfn1-----,τὴν,ὁ,the
+asfn3-----,Ῥωμαϊκὴν,Ῥωμαϊκός,Roman
+asfn3-----,γλῶσσαν,γλῶσσα,language
+csmn1-----,καὶ,καί,and
+asfn1-----,τὴν,ὁ,the
+asfn3-----,Ἐβραϊκὴν,Ἐβραϊκός,Hebrew
+asfn3-----,γλῶσσαν,γλῶσσα,language
+nsmn3-----,Αὐτὸς,αὐτός,he
+v-----pai3s,λαλεῖ,λαλέω,speaks
+b------,Ἑλληνιστὶ,Ἑλληνιστί,in Greek
+b------,Ῥωμαϊστὶ,Ῥωμαϊστί,in Latin
+csmn1-----,καὶ,καί,and
+b------,Ἑβραϊστί,Ἑβραϊστί,in Hebrew
+csmn1-----,ὁ,ὁ,the
+nsmn2-----,Ἀνδρόνικος,Ἀνδρόνικος,Andronicus
+v-----pai3s,μένει,μένω,stays
+p------,ἐν,ἐν,in
+dsfn3-----,Ῥώμῃ,Ῥώμη,Rome
+csmn1-----,ἀλλὰ,ἀλλά,but
+nsmn3-----,αὐτὸς,αὐτός,he
+v-----pai3s,ἐστιν,εἰμί,is
+nsmn3-----,ἀνὴρ,ἀνήρ,man
+asmn2-----,Ἰουδαίος,Ἰουδαῖος,"Jewish, a Jew"

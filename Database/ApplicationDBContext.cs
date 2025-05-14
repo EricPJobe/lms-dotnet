@@ -19,6 +19,7 @@ public class ApplicationDBContext : IdentityDbContext<AppUser>
     public DbSet<Asset> Asset { get; set; }
     public DbSet<Course> Course { get; set; } 
     public DbSet<Unit> Unit { get; set; }
+    public DbSet<ParsedWord> ParsedWord { get; set; }
     public DbSet<UnitCourse> UnitCourse { get; set; }
     // public DbSet<UserRole> UserRole { get; set; }
     // public DbSet<UserAccount> UserAccount { get; set; }

@@ -33,9 +33,9 @@ public class AccountRepository : IAccountRepository
         return account ;
     }
 
-    public async Task<Account> GetAccountByIdAsync(int id)
+    public async Task<Account> GetAccountByIdAsync(string id)
     {
-        var account = await _context.Account.FirstOrDefaultAsync(x => x.Id == id);
+        var account = await _context.Account.FirstOrDefaultAsync(x => x.AppUserId == id);
         if (account == null)
         {
             throw new KeyNotFoundException("Account not found");
@@ -66,5 +66,15 @@ public class AccountRepository : IAccountRepository
         _context.Account.Update(accountModel);
         await _context.SaveChangesAsync();
         return accountModel;
+    }
+    public async Task<Account?> GetAccountByUserNameAsync(string userName)
+    {
+        var account = await _context.Account.FirstOrDefaultAsync(x => x.UserName == userName);
+        if (account == null)
+        {
+            throw new KeyNotFoundException("Account not found");
+        }
+        Console.WriteLine($"Account found: {account.UserName}");
+        return account;
     }
 }

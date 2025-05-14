@@ -10,6 +10,9 @@ public static class AccountMapper
         return new AccountDto
         {
             Id = accountModel.Id,
+            Title = accountModel.Title,
+            FirstName = accountModel.FirstName,
+            LastName = accountModel.LastName,
             SubscriptionType = accountModel.SubscriptionType,
             AppUserId = accountModel.AppUserId,
             AccountDueTS = accountModel.AccountDueTS,
@@ -25,6 +28,9 @@ public static class AccountMapper
         {
             SubscriptionType = accountRequest.SubscriptionType,
             AppUserId = accountRequest.AppUserId,
+            Title = accountRequest.Title,
+            FirstName = accountRequest.FirstName,
+            LastName = accountRequest.LastName,
             AccountDueTS = accountRequest.AccountDueTS,
             // CreatedTS = accountRequest.CreatedTS,
             // UpdatedTS = accountRequest.UpdatedTS,
@@ -35,6 +41,9 @@ public static class AccountMapper
     {
         accountModel.SubscriptionType = accountRequest.SubscriptionType;
         accountModel.AppUserId = accountRequest.AppUserId;
+        accountModel.Title = accountRequest.Title;
+        accountModel.FirstName = accountRequest.FirstName;
+        accountModel.LastName = accountRequest.LastName;
         accountModel.AccountDueTS = accountRequest.AccountDueTS;
         // accountModel.CreatedTS = accountRequest.CreatedTS;
         // accountModel.UpdatedTS = accountRequest.UpdatedTS;

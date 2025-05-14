@@ -6,9 +6,10 @@ namespace lms_server.Interfaces;
 
 public interface IAccountRepository
 {
-    Task<Account> GetAccountByIdAsync(int id);
+    Task<Account> GetAccountByIdAsync(string id);
     Task<List<Account>> GetAllAccountsAsync(QueryObject queryObject);
     Task<Account?> CreateAccountAsync(Account account);
     Task<Account?> UpdateAccountAsync(int id, UpdateAccountRequest account);
     Task<bool> AssignCourseToAccountAsync(int accountId, List<int> courseIds);
+    Task<Account?> GetAccountByUserNameAsync(string userName);
 }
