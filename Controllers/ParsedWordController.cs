@@ -4,7 +4,7 @@ using lms_server.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v1/parsedword")]
 public class ParsedWordsController : ControllerBase
 {
     private readonly IParsedWordRepository _repository;

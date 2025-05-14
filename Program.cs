@@ -108,6 +108,7 @@ builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 // builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IParsedWordRepository, ParsedWordRepository>();
 
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
