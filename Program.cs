@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using lms_server.Services;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.Options;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -100,15 +101,14 @@ builder.Services.AddAuthentication(options =>
         )
     };
 });
-// builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 builder.Services.AddScoped<IAssetRepository, AssetRepository>();
 builder.Services.AddScoped<IUnitRepository, UnitRepository>(); 
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
-// builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
-builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IMyTokenService, MyTokenService>();
 builder.Services.AddScoped<IParsedWordRepository, ParsedWordRepository>();
+builder.Services.AddScoped<IAccountCoursesRepository, AccountCoursesRepository>();
 
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
@@ -116,7 +116,7 @@ builder.Services.AddControllers()
         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore; 
     });
 
-
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
 var app = builder.Build();
 

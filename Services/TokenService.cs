@@ -7,12 +7,12 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace lms_server.Services;
 
-public class TokenService : ITokenService
+public class MyTokenService : IMyTokenService
 {
     private readonly IConfiguration _config;
     private readonly SymmetricSecurityKey _key;
 
-    public TokenService(IConfiguration config)
+    public MyTokenService(IConfiguration config)
     {
         _config = config;
        

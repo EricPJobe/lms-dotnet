@@ -15,11 +15,11 @@ namespace lms_server.controllers;
 public class AuthenticationController : ControllerBase
 {
     private readonly UserManager<AppUser> _userManager;
-    private readonly ITokenService _tokenService;
+    private readonly IMyTokenService _tokenService;
     private readonly SignInManager<AppUser> _signinManager;
     private readonly IAccountRepository _accountRepository;
     public AuthenticationController(UserManager<AppUser> userManager, 
-                                    ITokenService tokenService, 
+                                    IMyTokenService tokenService, 
                                     SignInManager<AppUser> signInManager,
                                     IAccountRepository accountRepository)
     {
@@ -50,14 +50,13 @@ public class AuthenticationController : ControllerBase
         else
             return Unauthorized("Username not found and/or password incorrect");
 
-#pragma warning disable CS8601 // Possible null reference assignment.
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
         return Ok(
             new NewUserDto
             {
                 Id = user.Id,
+                AccountId = account!.Id,
                 UserName = user.UserName,
-                Email = user.Email,
+                Email = user.Email!,
                 FirstName = account.FirstName,
                 LastName = account.LastName,
                 Title = account.Title,
@@ -66,8 +65,6 @@ public class AuthenticationController : ControllerBase
                 Token = _tokenService.CreateToken(user)
             }
         );
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-#pragma warning restore CS8601 // Possible null reference assignment.
     }
 
     [HttpPost("register")]

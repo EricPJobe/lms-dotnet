@@ -10,6 +10,7 @@ public interface ICourseRepository
     Task<List<Course>> GetAllCoursesAsync(QueryObject queryObject);
     Task<Course?> CreateCourseAsync(Course course);
     Task<Course?> UpdateCourseAsync(int id, UpdateCourseRequest course);
+    Task<List<Course>> GetCoursesByIdsAsync(List<int> courseIds);
     Task<bool> AssignUnitToCourseAsync(int courseId, List<int> unitIds);
     Task<bool> CourseExists(int courseId);
 }

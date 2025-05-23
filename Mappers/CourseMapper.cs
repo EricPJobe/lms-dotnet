@@ -11,11 +11,13 @@ public static class CourseMapper
         {
             Id = courseModel.Id,
             Name = courseModel.Name,
+            Description = courseModel.Description,
+            ImageUrl = courseModel.ImageUrl,
+            VideoUrl = courseModel.VideoUrl,
+            ProductCategoryId = courseModel.ProductCategoryId,
             Author = courseModel.Author,
             Level = courseModel.Level,
             Topic = courseModel.Topic,
-            // CreatedTS = courseModel.CreatedTS,
-            // UpdatedTS = courseModel.UpdatedTS,
             IsActive = courseModel.IsActive,
         };
     }
@@ -24,22 +26,26 @@ public static class CourseMapper
         return new Course
         {
             Name = courseRequest.Name,
+            Description = courseRequest.Description,
+            ImageUrl = courseRequest.ImageUrl,
+            VideoUrl = courseRequest.VideoUrl,
+            ProductCategoryId = courseRequest.ProductCategoryId,
             Author = courseRequest.Author,
             Level = courseRequest.Level,
             Topic = courseRequest.Topic,
-            // CreatedTS = courseRequest.CreatedTS,
-            // UpdatedTS = courseRequest.UpdatedTS,
             IsActive = courseRequest.IsActive,
         };
     }  
     public static Course ToCourseFromUpdateDto(this UpdateCourseRequest courseRequest, Course courseModel)
     {
         courseModel.Name = courseRequest.Name;
+        courseModel.Description = courseRequest.Description;
+        courseModel.ImageUrl = courseRequest.ImageUrl;
+        courseModel.VideoUrl = courseRequest.VideoUrl;
+        courseModel.ProductCategoryId = courseRequest.ProductCategoryId;
         courseModel.Author = courseRequest.Author;
         courseModel.Level = courseRequest.Level;
         courseModel.Topic = courseRequest.Topic;
-        // courseModel.CreatedTS = courseRequest.CreatedTS;
-        // courseModel.UpdatedTS = courseRequest.UpdatedTS;
         courseModel.IsActive = courseRequest.IsActive;
 
         return courseModel;

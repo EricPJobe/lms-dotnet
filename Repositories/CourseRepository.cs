@@ -49,6 +49,21 @@ public class CourseRepository : ICourseRepository
         return course;
     }
 
+    public async Task<List<Course>> GetCoursesByIdsAsync(List<int> courseIds)
+    {
+        if (courseIds == null || courseIds.Count == 0)
+        {
+            return new List<Course>();
+        }
+
+        var coursesFromRepo = await _context.Course.ToListAsync();
+        var courses = coursesFromRepo
+            .Where(c => courseIds.Contains(c.Id))
+            .ToList();
+
+        return courses;
+    }
+
     public async Task<Course?> UpdateCourseAsync(int id, UpdateCourseRequest course)
     {
         var courseModel = await _context.Course.FirstOrDefaultAsync(x => x.Id == id);

@@ -6,6 +6,9 @@ using lms_server.Interfaces;
 using lms_server.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.ObjectPool;
+using Microsoft.AspNetCore.JsonPatch.Internal;
+using lms_server.Models;
 
 namespace lms_server.controllers;
 
@@ -15,9 +18,11 @@ public class CourseController : ControllerBase
 {
     private readonly ApplicationDBContext _context;
     private readonly ICourseRepository _courseRepository;
-    public CourseController(ApplicationDBContext context, ICourseRepository courseRepository) 
+    private readonly IAccountCoursesRepository _accountCoursesRepository;
+    public CourseController(ApplicationDBContext context, ICourseRepository courseRepository, IAccountCoursesRepository accountCoursesRepository) 
     {
         _courseRepository = courseRepository;
+        _accountCoursesRepository = accountCoursesRepository;
         _context = context;
     }
 
@@ -60,5 +65,23 @@ public class CourseController : ControllerBase
         }
         
         return Ok(courseModel.ToCourseDto());
+    }
+
+     [HttpGet("my-courses/{accountid:int}")]
+    // [Authorize]
+    public async Task<IActionResult> GetMyCourses([FromRoute] int accountid)
+    {
+
+        var accountCourses = await _accountCoursesRepository.GetByAccountIdAsync(accountid);
+        var courseIds = accountCourses.Select(ac => ac.CourseId).ToList();
+        if (courseIds.Count == 0)
+        {
+            return NotFound();
+        }
+           
+
+        var courses = await _courseRepository.GetCoursesByIdsAsync(courseIds);
+            
+        return Ok(courses);
     }
 }

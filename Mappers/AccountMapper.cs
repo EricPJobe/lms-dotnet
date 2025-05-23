@@ -39,6 +39,7 @@ public static class AccountMapper
     }
     public static Account ToAccountFromUpdateDto(this UpdateAccountRequest accountRequest, Account accountModel)
     {
+        accountModel.Id = accountRequest.Id;
         accountModel.SubscriptionType = accountRequest.SubscriptionType;
         accountModel.AppUserId = accountRequest.AppUserId;
         accountModel.Title = accountRequest.Title;

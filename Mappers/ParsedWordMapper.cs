@@ -8,6 +8,7 @@ public static class ParsedWordMapper
     {
         return new ParsedWordDto
         {
+            Id = word.Id,
             UnitNumber = word.UnitNumber,
             SentenceNumber = word.SentenceNumber,
             Parsing = word.Parsing,

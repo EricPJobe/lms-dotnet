@@ -43,9 +43,10 @@ public class AccountRepository : IAccountRepository
         return account;
     }
 
-    public Task<List<Account>> GetAllAccountsAsync(QueryObject queryObject)
+    public async Task<List<Account>> GetAllAccountsAsync(QueryObject queryObject)
     {
-        return _context.Account.ToListAsync();
+        var accounts = await _context.Account.ToListAsync();
+        return accounts;
     }
 
     public async Task<Account?> UpdateAccountAsync(int id, UpdateAccountRequest account)
